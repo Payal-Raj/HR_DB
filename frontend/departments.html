@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <title>Departments</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS v5.3.8 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="dashboard.html">System Limited</a>
+          <button
+            class="navbar-toggler d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapsibleNavId"
+            aria-controls="collapsibleNavId"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+            Log out
+          </button>
+        </div>
+      </nav>
+    </header>
+    <main class="py-4">
+      <div class="container">
+        <h1 class="text-center">Departments</h1>
+        <div class="table-responsive border">
+          <table class="table">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Manager ID</th>
+                <th scope="col">Location ID</th>
+              </tr>
+            </thead>
+            <tbody id="dep_table"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+    <footer class="bg-dark text-light py-3 mt-5">
+      <div class="container d-flex justify-content-between align-items-center">
+        <div>
+          <strong>EMS Dashboard</strong><br />
+          <small>QueryQuest Project</small>
+        </div>
+
+        <div class="text-end">
+          <small>© 2026 System Limited</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Bootstrap JavaScript Bundle (includes Popper) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const URL = "http://localhost:3000/departments";
+
+      async function getdpt() {
+        const response = await fetch(URL);
+        const departments = await response.json();
+
+        const tbody = document.getElementById("dep_table");
+        tbody.innerHTML = departments
+          .map(
+            (department) => `
+                 <tr>
+                    <td>${department.department_id}</td>
+                    <td>${department.department_name}</td>
+                    <td>${department.manager_id}</td>
+                    <td>${department.location_id}</td>
+                </tr>
+        `,
+          )
+          .join("");
+      }
+
+      getdpt();
+    </script>
+  </body>
+</html>
