@@ -59,6 +59,163 @@
             </thead>
             <tbody id="emp_table"></tbody>
           </table>
+          <div>
+            <button
+              type="button"
+              class="btn btn-success mb-4"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+            >
+              New Employee
+            </button>
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="staticBackdrop"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                      New Employee
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/employees" method="POST" class="row g-3">
+                      <div class="col-md-6">
+                        <label class="form-label">Employee ID</label>
+                        <input
+                          type="number"
+                          name="employee_id"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Hire Date</label>
+                        <input
+                          type="date"
+                          name="hire_date"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input
+                          type="text"
+                          name="first_name"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input
+                          type="text"
+                          name="last_name"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-12">
+                        <label class="form-label">Email</label>
+                        <input
+                          type="text"
+                          name="email"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Phone Number</label>
+                        <input
+                          type="text"
+                          name="phone_number"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Job ID</label>
+                        <input
+                          type="text"
+                          name="job_id"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label">Salary</label>
+                        <input
+                          type="number"
+                          name="salary"
+                          step="0.01"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label">Commission %</label>
+                        <input
+                          type="number"
+                          name="commission_pct"
+                          step="0.01"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label">Department ID</label>
+                        <input
+                          type="number"
+                          name="department_id"
+                          class="form-control"
+                          required
+                        />
+                      </div>
+
+                      <div class="col-12">
+                        <label class="form-label">Manager ID</label>
+                        <input
+                          type="number"
+                          name="manager_id"
+                          class="form-control"
+                        />
+                      </div>
+
+                      <div class="col-12">
+                        <button
+                          type="submit"
+                          class="btn btn-success w-100 py-2"
+                        >
+                        Save
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
