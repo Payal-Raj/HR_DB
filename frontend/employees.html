@@ -64,18 +64,16 @@
               type="button"
               class="btn btn-success mb-4"
               data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop"
+              data-bs-target="#exampleModal"
             >
               New Employee
             </button>
             <!-- Modal -->
             <div
               class="modal fade"
-              id="staticBackdrop"
-              data-bs-backdrop="static"
-              data-bs-keyboard="false"
+              id="exampleModal"
               tabindex="-1"
-              aria-labelledby="staticBackdropLabel"
+              aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
               <div class="modal-dialog modal-dialog-scrollable">
@@ -92,7 +90,7 @@
                     ></button>
                   </div>
                   <div class="modal-body">
-                    <form action="/employees" method="POST" class="row g-3">
+                    <form id="empForm" class="row g-3">
                       <div class="col-md-6">
                         <label class="form-label">Employee ID</label>
                         <input
@@ -174,7 +172,7 @@
                       </div>
 
                       <div class="col-md-4">
-                        <label class="form-label">Commission %</label>
+                        <label class="form-label">Commission (0.2)</label>
                         <input
                           type="number"
                           name="commission_pct"
@@ -207,7 +205,7 @@
                           type="submit"
                           class="btn btn-success w-100 py-2"
                         >
-                        Save
+                          Save
                         </button>
                       </div>
                     </form>
@@ -268,6 +266,38 @@
       }
 
       getemp();
+      document
+        .getElementById("empForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const data = {
+            employee_id: document.querySelector("[name=employee_id]").value,
+            first_name: document.querySelector("[name=first_name]").value,
+            last_name: document.querySelector("[name=last_name]").value,
+            email: document.querySelector("[name=email]").value,
+            phone_number: document.querySelector("[name=phone_number]").value,
+            hire_date: document.querySelector("[name=hire_date]").value,
+            job_id: document.querySelector("[name=job_id]").value,
+            salary: document.querySelector("[name=salary]").value,
+            commission_pct:
+              document.querySelector("[name=commission_pct]").value || null,
+            manager_id:
+              document.querySelector("[name=manager_id]").value || null,
+            department_id: document.querySelector("[name=department_id]").value,
+          };
+
+          await fetch("http://localhost:3000/employees", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          getemp();
+          alert("Employee added successfully!");
+        });
     </script>
   </body>
 </html>
