@@ -54,6 +54,97 @@
             <tbody id="job_table"></tbody>
           </table>
         </div>
+        <!-- Modal trigger button -->
+        <button
+            type="button"
+            class="btn btn-primary btn-lg"
+            data-bs-toggle="modal"
+            data-bs-target="#modalId"
+        >
+            Add Job
+        </button>
+        
+        <!-- Modal Body -->
+        <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+        <div
+            class="modal fade"
+            id="modalId"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="modalTitleId"
+            aria-hidden="true"
+        >
+            <div
+                class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+                role="document"
+            >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitleId">
+                           Add Job
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="job_data">
+                        <div class="mb-3">
+                            <label  class="form-label">Job ID</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="job_id"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label  class="form-label">Job Title</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="job_title"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label  class="form-label">Min_salary</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="min_salary"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label  class="form-label">max_salary</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="max_salary"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Save
+                        </button>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Optional: Place to the bottom of scripts -->
+        <script>
+            const myModal = new bootstrap.Modal(
+                document.getElementById("modalId"),
+                options,
+            );
+        </script>
+        
       </div>
     </main>
     <footer class="bg-dark text-light py-3 mt-5">
@@ -97,6 +188,26 @@
           .join("");
       }
       getJobs();
+
+      document.getElementById("job_data").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = {
+            job_id: document.querySelector("[name=job_id]").value,
+            job_title: document.querySelector("[name=job_title]").value,
+            min_salary: document.querySelector("[name=min_salary]").value,
+            max_salary: document.querySelector("[name=max_salary]").value,
+        };
+        await fetch("http://localhost:3000/jobs" ,
+            {method:"POST",
+                headers:{
+                    "Content-type":"application/json"
+                },
+                body:JSON.stringify(data),
+            }
+        )
+        getJobs();
+        alert("Added succesfully");
+      })
     </script>
   </body>
 </html>

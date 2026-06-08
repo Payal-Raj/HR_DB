@@ -51,6 +51,60 @@
             <tbody id="rg_table"></tbody>
           </table>
         </div>
+        <!-- Modal trigger button -->
+        <button
+          type="button"
+          class="btn btn-primary btn-lg"
+          data-bs-toggle="modal"
+          data-bs-target="#modalId"
+        >
+          Add region
+        </button>
+
+        <!-- Modal Body -->
+        <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+        <div
+          class="modal fade"
+          id="modalId"
+          tabindex="-1"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          role="dialog"
+          aria-labelledby="modalTitleId"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+            role="document"
+          >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Add Region</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <form id="rg_data">
+                <div class="mb-3">
+                  <label class="form-label">Region ID</label>
+                  <input type="number" class="form-control" name="region_id" />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Region Name</label>
+                  <input type="text" class="form-control" name="region_name" />
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                  Save
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
     <footer class="bg-dark text-light py-3 mt-5">
@@ -93,6 +147,28 @@
       }
 
       getrg();
+
+      document
+        .getElementById("rg_data")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const data = {
+            region_id: document.querySelector("[name=region_id]").value,
+            region_name: document.querySelector("[name=region_name]").value,
+          };
+
+          await fetch("http://localhost:3000/regions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
+
+          getrg();
+          alert("Region Added successfully");
+        });
     </script>
   </body>
 </html>

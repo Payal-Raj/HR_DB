@@ -84,6 +84,19 @@ app.get("/jobs", async (req, res) => {
   }
 });
 
+app.post("/jobs", async (req, res) => {
+    try {
+        const {job_id, job_title, min_salary, max_salary} = req.body;
+        const result = pool.query(
+            `insert into jobs (job_id, job_title, min_salary, max_salary) values ($1,$2,$3,$4) RETURNING *`,
+            [job_id, job_title, Number(min_salary), Number(max_salary)],
+        );
+        res.json(result.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: err.message });
+    }
+})
+
 //---------------------------------------departments
 app.get("/departments", async (req, res) => {
   try {
@@ -104,11 +117,36 @@ app.get("/countries", async (req, res) => {
   }
 });
 
+app.post("/countries", async (req,res) => {
+    try {
+        const {country_id, country_name, region_id} = req.body;
+        const result = await pool.query(
+            `insert into countries (country_id, country_name, region_id) values ($1,$2,$3) RETURNING *`,
+            [country_id, country_name, Number(region_id)],
+        );
+        res.json(result.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: err.message });
+    }
+})
 //---------------------------------------regions
 app.get("/regions", async (req, res) => {
   try {
     const result = await pool.query("select * from regions");
     res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/regions", async (req, res) => {
+  try {
+    const {region_id, region_name} = req.body;
+    const result = await pool.query(
+        `insert into regions (region_id, region_name) values ($1,$2) RETURNING *`,
+        [Number(region_id),region_name],
+    );
+    res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
