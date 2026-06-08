@@ -152,6 +152,36 @@ app.post("/regions", async (req, res) => {
   }
 });
 
+app.put("/regions/:id", async (req,res) => {
+    try {
+        const {id} = req.params;
+        const {region_name} = req.body;
+        const result = await pool.query(`update regions set region_name = $1 where region_id = $2 RETURNING *`,
+            [region_name, Number(id)]
+        );
+        res.json(result,rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: err.message });
+    }
+})
+
+app.delete("/regions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await pool.query(
+      `DELETE FROM regions
+       WHERE region_id = $1
+       RETURNING *`,
+      [Number(id)]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 //---------------------------------------loactions
 app.get("/locations", async (req, res) => {
   try {
