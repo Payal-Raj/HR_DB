@@ -129,6 +129,35 @@ app.post("/countries", async (req,res) => {
         res.status(500).json({ error: err.message });
     }
 })
+
+app.put("/countries/:id", async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {country_name, region_id} = req.body;
+
+        const result = await pool.query(`update countries set country_name = $1, region_id = $2 where country_id = $3 RETURNING *`,
+            [country_name, Number(region_id), id]
+        );
+
+        res.json(result.row[0]);
+    } catch (error) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.delete("/countries/:id", async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const result = await pool.query(`delete from countries where country_id = $1 RETURNING *`,
+            [(id)]
+        );
+
+        res.json(result.row[0]);
+    } catch (error) {
+        res.status(500).json({ error: err.message });
+    }
+})
 //---------------------------------------regions
 app.get("/regions", async (req, res) => {
   try {
