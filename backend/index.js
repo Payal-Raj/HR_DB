@@ -85,17 +85,17 @@ app.get("/jobs", async (req, res) => {
 });
 
 app.post("/jobs", async (req, res) => {
-    try {
-        const {job_id, job_title, min_salary, max_salary} = req.body;
-        const result = pool.query(
-            `insert into jobs (job_id, job_title, min_salary, max_salary) values ($1,$2,$3,$4) RETURNING *`,
-            [job_id, job_title, Number(min_salary), Number(max_salary)],
-        );
-        res.json(result.rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: err.message });
-    }
-})
+  try {
+    const { job_id, job_title, min_salary, max_salary } = req.body;
+    const result = pool.query(
+      `insert into jobs (job_id, job_title, min_salary, max_salary) values ($1,$2,$3,$4) RETURNING *`,
+      [job_id, job_title, Number(min_salary), Number(max_salary)],
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 //---------------------------------------departments
 app.get("/departments", async (req, res) => {
@@ -117,47 +117,49 @@ app.get("/countries", async (req, res) => {
   }
 });
 
-app.post("/countries", async (req,res) => {
-    try {
-        const {country_id, country_name, region_id} = req.body;
-        const result = await pool.query(
-            `insert into countries (country_id, country_name, region_id) values ($1,$2,$3) RETURNING *`,
-            [country_id, country_name, Number(region_id)],
-        );
-        res.json(result.rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: err.message });
-    }
-})
+app.post("/countries", async (req, res) => {
+  try {
+    const { country_id, country_name, region_id } = req.body;
+    const result = await pool.query(
+      `insert into countries (country_id, country_name, region_id) values ($1,$2,$3) RETURNING *`,
+      [country_id, country_name, Number(region_id)],
+    );
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.put("/countries/:id", async (req, res) => {
-    try {
-        const {id} = req.params;
-        const {country_name, region_id} = req.body;
+  try {
+    const { id } = req.params;
+    const { country_name, region_id } = req.body;
 
-        const result = await pool.query(`update countries set country_name = $1, region_id = $2 where country_id = $3 RETURNING *`,
-            [country_name, Number(region_id), id]
-        );
+    const result = await pool.query(
+      `update countries set country_name = $1, region_id = $2 where country_id = $3 RETURNING *`,
+      [country_name, Number(region_id), id],
+    );
 
-        res.json(result.row[0]);
-    } catch (error) {
-        res.status(500).json({ error: err.message });
-    }
+    res.json(result.row[0]);
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.delete("/countries/:id", async (req, res) => {
-    try {
-        const {id} = req.params;
+  try {
+    const { id } = req.params;
 
-        const result = await pool.query(`delete from countries where country_id = $1 RETURNING *`,
-            [(id)]
-        );
+    const result = await pool.query(
+      `delete from countries where country_id = $1 RETURNING *`,
+      [id],
+    );
 
-        res.json(result.row[0]);
-    } catch (error) {
-        res.status(500).json({ error: err.message });
-    }
-})
+    res.json(result.row[0]);
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+});
 //---------------------------------------regions
 app.get("/regions", async (req, res) => {
   try {
@@ -170,10 +172,10 @@ app.get("/regions", async (req, res) => {
 
 app.post("/regions", async (req, res) => {
   try {
-    const {region_id, region_name} = req.body;
+    const { region_id, region_name } = req.body;
     const result = await pool.query(
-        `insert into regions (region_id, region_name) values ($1,$2) RETURNING *`,
-        [Number(region_id),region_name],
+      `insert into regions (region_id, region_name) values ($1,$2) RETURNING *`,
+      [Number(region_id), region_name],
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -181,18 +183,19 @@ app.post("/regions", async (req, res) => {
   }
 });
 
-app.put("/regions/:id", async (req,res) => {
-    try {
-        const {id} = req.params;
-        const {region_name} = req.body;
-        const result = await pool.query(`update regions set region_name = $1 where region_id = $2 RETURNING *`,
-            [region_name, Number(id)]
-        );
-        res.json(result,rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: err.message });
-    }
-})
+app.put("/regions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { region_name } = req.body;
+    const result = await pool.query(
+      `update regions set region_name = $1 where region_id = $2 RETURNING *`,
+      [region_name, Number(id)],
+    );
+    res.json(result, rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.delete("/regions/:id", async (req, res) => {
   try {
@@ -202,7 +205,7 @@ app.delete("/regions/:id", async (req, res) => {
       `DELETE FROM regions
        WHERE region_id = $1
        RETURNING *`,
-      [Number(id)]
+      [Number(id)],
     );
 
     res.json(result.rows[0]);
@@ -217,6 +220,21 @@ app.get("/locations", async (req, res) => {
     const result = await pool.query("select * from locations");
     res.json(result.rows);
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/analytics/employee-per-dep", async (req, res) => {
+  try {
+    const result =await pool.query(`
+            SELECT department_id, COUNT(*) AS count
+            FROM employees
+            GROUP BY department_id
+            ORDER BY department_id;
+            `);
+
+            res.json(result.rows);
+  } catch (error) {
     res.status(500).json({ error: err.message });
   }
 });
